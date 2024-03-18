@@ -40,7 +40,6 @@ public class ProductServiceService {
     }
 
     private Product mapToProduct(ResultSet rs) throws SQLException {
-
         Product product = new Product();
         product.setId(rs.getInt("id"));
         product.setDescription(rs.getString("description"));
@@ -55,5 +54,6 @@ public class ProductServiceService {
 
         return product;
     }
+
 }
 
