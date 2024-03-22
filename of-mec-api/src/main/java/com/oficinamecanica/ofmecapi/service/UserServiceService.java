@@ -22,10 +22,22 @@ public class UserServiceService {
         return jdbcTemplate.query(sql, (rs, rowNum) -> mapToUser(rs));
     }
 
-    public boolean getUserLogin(String email, String password) {
-        String sql = "SELECT COUNT(*) FROM admin WHERE email = ? AND password = ?";
-        int count = jdbcTemplate.queryForObject(sql, new Object[]{email, password}, Integer.class);
-        return count > 0;
+    public User getUserLogin(String email, String password) {
+        try {
+            String sql = "SELECT * FROM admin WHERE email = ? AND password = ?";
+            return jdbcTemplate.queryForObject(sql, new Object[]{email, password}, (rs, rowNum) -> mapToUser(rs));
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    public User getUserValidate(String token) {
+        try {
+            String sql = "SELECT * FROM admin WHERE token = ?";
+            return jdbcTemplate.queryForObject(sql, new Object[]{token}, (rs, rowNum) -> mapToUser(rs));
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     public List<User> getUserByLike(String like) {
@@ -51,6 +63,7 @@ public class UserServiceService {
         user.setName(rs.getString("name"));
         user.setEmail(rs.getString("email"));
         user.setPassword(rs.getString("password"));
+        user.setToken(rs.getString("token"));
         user.setRole(rs.getInt("role"));
 
         return user;

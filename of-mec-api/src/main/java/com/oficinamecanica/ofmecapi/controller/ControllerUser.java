@@ -1,8 +1,6 @@
 package com.oficinamecanica.ofmecapi.controller;
 
-import com.oficinamecanica.ofmecapi.dao.ProductDAO;
 import com.oficinamecanica.ofmecapi.dao.UserDAO;
-import com.oficinamecanica.ofmecapi.model.Product;
 import com.oficinamecanica.ofmecapi.model.User;
 import com.oficinamecanica.ofmecapi.service.UserServiceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +30,13 @@ public class ControllerUser {
 
     // Retorna uma única user conforme o atributo Email e Password LOGIN JDBCTemplate
     @GetMapping("/user/{email}/{password}")
-    public boolean getUserLogin(@PathVariable String email, @PathVariable String password) {
+    public User getUserLogin(@PathVariable String email, @PathVariable String password) {
         return userServiceRepository.getUserLogin(email, password);
+    }
+
+    @GetMapping("/user/validate/{token}")
+    public User getUserValidate(@PathVariable String token) {
+        return userServiceRepository.getUserValidate(token);
     }
 
     // Retorna uma única user conforme o atributo id JDBCTemplate
